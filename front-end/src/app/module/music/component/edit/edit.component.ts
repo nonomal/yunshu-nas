@@ -1,9 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {mergeMap} from "rxjs";
+import {mergeMap, Subscription} from "rxjs";
 import {MusicService} from "../../../../service/music.service";
 import {NzMessageService} from "ng-zorro-antd/message";
+import {NzUploadFile, NzUploadXHRArgs} from "ng-zorro-antd/upload/interface";
 
 @Component({
   selector: 'app-edit',
@@ -59,4 +60,15 @@ export class EditComponent implements OnInit {
 
     }
   }
+
+  before = (file: NzUploadFile, fileList: NzUploadFile[]) => {
+    console.log(file);
+    console.log(fileList);
+    return true;
+  }
+
+  customRequest = (item: NzUploadXHRArgs) => {
+    console.log(item);
+    return Subscription.EMPTY;
+  };
 }
