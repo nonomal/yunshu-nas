@@ -36,7 +36,9 @@ export class EditComponent implements OnInit {
       lyricId: ['', [Validators.required]],
       lyric: [],
       musicFile: [],
-      musicFileSource: []
+      musicFileSource: [],
+      coverFile: [],
+      coverFileSource: []
     });
     this.route.params.pipe(
       mergeMap(params => this.musicService.oneMusicInfo(params['id']))
@@ -71,11 +73,20 @@ export class EditComponent implements OnInit {
     }
   }
 
-  onFileChange(event: any) {
+  onMusicFileChange(event: any) {
     if (event.target.files.length > 0) {
       const file = event.target.files[0];
       this.formParams.patchValue({
         musicFileSource: file
+      });
+    }
+  }
+
+  onCoverFileChange(event: any) {
+    if (event.target.files.length > 0) {
+      const file = event.target.files[0];
+      this.formParams.patchValue({
+        coverFileSource: file
       });
     }
   }

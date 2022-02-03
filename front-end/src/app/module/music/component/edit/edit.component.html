@@ -37,15 +37,16 @@
         <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="musicFile">上传歌曲</nz-form-label>
         <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="必须上传歌曲信息">
           <nz-input-group>
-            <input nz-input type="file" formControlName="musicFile" id="musicFile"  (change)="onFileChange($event)"/>
+            <input nz-input type="file" formControlName="musicFile" id="musicFile"  (change)="onMusicFileChange($event)"/>
           </nz-input-group>
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
-        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="coverUri">歌曲封面</nz-form-label>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="coverUri">上传封面</nz-form-label>
         <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="必须上传歌曲封面">
           <nz-input-group>
             <img [src]="data?.coverUri" alt="歌曲封面未加载成功" id="coverUri">
+            <input nz-input type="file" formControlName="coverFile" id="coverFile"  (change)="onCoverFileChange($event)"/>
           </nz-input-group>
         </nz-form-control>
       </nz-form-item>
