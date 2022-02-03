@@ -4,7 +4,7 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {mergeMap, Subscription} from "rxjs";
 import {MusicService} from "../../../../service/music.service";
 import {NzMessageService} from "ng-zorro-antd/message";
-import {NzUploadFile, NzUploadXHRArgs} from "ng-zorro-antd/upload/interface";
+import {NzUploadChangeParam, NzUploadFile, NzUploadXHRArgs} from "ng-zorro-antd/upload/interface";
 
 @Component({
   selector: 'app-edit',
@@ -62,13 +62,28 @@ export class EditComponent implements OnInit {
   }
 
   before = (file: NzUploadFile, fileList: NzUploadFile[]) => {
+    // 上传之前
     console.log(file);
     console.log(fileList);
     return true;
   }
 
   customRequest = (item: NzUploadXHRArgs) => {
+    // 自定义上传动作
     console.log(item);
     return Subscription.EMPTY;
   };
+
+  uploadUri = (file: NzUploadFile) => {
+    // 上传URI
+    return this.musicService.uploadMusicUri();
+  };
+
+  fileChange(info: NzUploadChangeParam) {
+    // 文件状态变化
+    console.log(info);
+    if (info.file.status === 'done') {
+      console.log(info.file.response);
+    }
+  }
 }

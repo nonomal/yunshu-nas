@@ -38,14 +38,14 @@
         <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="必须上传歌曲信息">
           <nz-input-group>
             <nz-upload id="uploadMusic"
-              nzAction="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-              [nzHeaders]="{ authorization: 'authorization-text' }"
+                       [nzAction]="uploadUri"
+                       [nzHeaders]="{ authorization: 'authorization-text' }"
                        [nzBeforeUpload]="before"
-                       [nzCustomRequest]="customRequest"
+                       (nzChange)="fileChange($event)"
             >
               <button nz-button>
                 <i nz-icon nzType="upload"></i>
-                Click to Upload
+                上传歌曲文件
               </button>
             </nz-upload>
           </nz-input-group>

@@ -45,4 +45,8 @@ export class MusicService {
         })
       );
   }
+
+  uploadMusicUri(): string {
+    return `${this.uri}/musicManage/musicUpload`
+  }
 }
