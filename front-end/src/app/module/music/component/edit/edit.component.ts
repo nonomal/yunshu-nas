@@ -5,6 +5,7 @@ import {mergeMap, Subscription} from "rxjs";
 import {MusicService} from "../../../../service/music.service";
 import {NzMessageService} from "ng-zorro-antd/message";
 import {NzUploadChangeParam, NzUploadFile, NzUploadXHRArgs} from "ng-zorro-antd/upload/interface";
+import {MusicManageDTO} from "../../../../entity/MusicManageDTO";
 
 @Component({
   selector: 'app-edit',
@@ -17,6 +18,8 @@ export class EditComponent implements OnInit {
 
   dataLoading = true;
   editBtnLoading = false;
+  data: MusicManageDTO;
+  lyricData: string;
 
   constructor(private route: ActivatedRoute,
               private router: Router,
@@ -30,7 +33,10 @@ export class EditComponent implements OnInit {
       name: ['', [Validators.required]],
       singer: ['', [Validators.required]],
       musicId: ['', [Validators.required]],
-      lyricId: ['', [Validators.required]]
+      lyricId: ['', [Validators.required]],
+      lyric: [],
+      musicFile: [],
+      musicFileSource: []
     });
     this.route.params.pipe(
       mergeMap(params => this.musicService.oneMusicInfo(params['id']))
@@ -42,10 +48,14 @@ export class EditComponent implements OnInit {
         this.router.navigateByUrl('/').catch(console.error);
         return;
       }
+      this.data = data;
       this.formParams.patchValue({name: data.name});
       this.formParams.patchValue({singer: data.singer});
       this.formParams.patchValue({musicId: data.musicId});
       this.formParams.patchValue({lyricId: data.lyricId});
+      this.musicService.getLyric(this.data.lyricUri).subscribe(data => {
+        this.lyricData = data;
+      });
     });
   }
 
@@ -57,33 +67,16 @@ export class EditComponent implements OnInit {
       }
     }
     if (this.formParams.valid) {
-
+      console.log(this.formParams.value)
     }
   }
 
-  before = (file: NzUploadFile, fileList: NzUploadFile[]) => {
-    // 上传之前
-    console.log(file);
-    console.log(fileList);
-    return true;
-  }
-
-  customRequest = (item: NzUploadXHRArgs) => {
-    // 自定义上传动作
-    console.log(item);
-    return Subscription.EMPTY;
-  };
-
-  uploadUri = (file: NzUploadFile) => {
-    // 上传URI
-    return this.musicService.uploadMusicUri();
-  };
-
-  fileChange(info: NzUploadChangeParam) {
-    // 文件状态变化
-    console.log(info);
-    if (info.file.status === 'done') {
-      console.log(info.file.response);
+  onFileChange(event: any) {
+    if (event.target.files.length > 0) {
+      const file = event.target.files[0];
+      this.formParams.patchValue({
+        musicFileSource: file
+      });
     }
   }
 }

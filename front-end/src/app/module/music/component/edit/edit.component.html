@@ -34,20 +34,26 @@
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
-        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="uploadMusic">上传歌曲</nz-form-label>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="musicFile">上传歌曲</nz-form-label>
         <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="必须上传歌曲信息">
           <nz-input-group>
-            <nz-upload id="uploadMusic"
-                       [nzAction]="uploadUri"
-                       [nzHeaders]="{ authorization: 'authorization-text' }"
-                       [nzBeforeUpload]="before"
-                       (nzChange)="fileChange($event)"
-            >
-              <button nz-button>
-                <i nz-icon nzType="upload"></i>
-                上传歌曲文件
-              </button>
-            </nz-upload>
+            <input nz-input type="file" formControlName="musicFile" id="musicFile"  (change)="onFileChange($event)"/>
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="coverUri">歌曲封面</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="必须上传歌曲封面">
+          <nz-input-group>
+            <img [src]="data?.coverUri" alt="歌曲封面未加载成功" id="coverUri">
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="lyric">歌词</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="必须填写歌词">
+          <nz-input-group>
+            <textarea rows="4" formControlName="lyric" nz-input [value]="lyricData"></textarea>
           </nz-input-group>
         </nz-form-control>
       </nz-form-item>

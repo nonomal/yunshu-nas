@@ -87,7 +87,7 @@ public class UploadServiceImpl implements UploadService {
         music.setType(musicType.getType());
         log.info("写入数据库：{}", music);
         try {
-            musicRepository.save(music);
+           // musicRepository.save(music);
         } catch (Exception e) {
             log.error("写入数据库异常，移除已经拷贝的文件：{}", musicDataSource.deleteMusic(musicId));
         }

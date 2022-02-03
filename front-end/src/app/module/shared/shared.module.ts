@@ -16,7 +16,6 @@ import {NzMessageModule} from 'ng-zorro-antd/message';
 import {NzSpinModule} from 'ng-zorro-antd/spin';
 import {NzModalModule} from 'ng-zorro-antd/modal';
 import {NzNotificationModule} from 'ng-zorro-antd/notification';
-import {NzUploadModule} from 'ng-zorro-antd/upload';
 
 const importAndExport = [
   ReactiveFormsModule,
@@ -36,8 +35,7 @@ const importAndExport = [
   NzMessageModule,
   NzSpinModule,
   NzModalModule,
-  NzNotificationModule,
-  NzUploadModule
+  NzNotificationModule
 ];
 
 @NgModule({

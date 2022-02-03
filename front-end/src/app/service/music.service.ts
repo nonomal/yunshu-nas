@@ -49,4 +49,8 @@ export class MusicService {
   uploadMusicUri(): string {
     return `${this.uri}/musicManage/musicUpload`
   }
+
+  getLyric(uri: string): Observable<string> {
+    return this.http.get<string>(uri);
+  }
 }
