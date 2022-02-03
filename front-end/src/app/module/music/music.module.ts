@@ -1,17 +1,22 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {NgModule} from '@angular/core';
 
-import { MusicRoutingModule } from './music-routing.module';
-import { ListComponent } from './component/list/list.component';
+import {MusicRoutingModule} from './music-routing.module';
+import {ListComponent} from './component/list/list.component';
+import {SharedModule} from "../shared/shared.module";
+import {TimeReadablePipe} from "../../pipe/time-readable.pipe";
+import { EditComponent } from './component/edit/edit.component';
 
 
 @NgModule({
   declarations: [
-    ListComponent
+    TimeReadablePipe,
+    ListComponent,
+    EditComponent
   ],
   imports: [
-    CommonModule,
+    SharedModule,
     MusicRoutingModule
   ]
 })
-export class MusicModule { }
+export class MusicModule {
+}

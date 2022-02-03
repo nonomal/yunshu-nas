@@ -11,6 +11,7 @@ import {HttpClientModule} from '@angular/common/http';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {IndexModule} from "./module/index/index.module";
 import {SharedModule} from "./module/shared/shared.module";
+import {MusicModule} from "./module/music/music.module";
 
 registerLocaleData(zh);
 
@@ -21,13 +22,15 @@ registerLocaleData(zh);
   imports: [
     IndexModule,
     SharedModule,
+    MusicModule,
     BrowserModule,
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
   ],
-  providers: [{ provide: NZ_I18N, useValue: zh_CN }],
+  providers: [{provide: NZ_I18N, useValue: zh_CN}],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}

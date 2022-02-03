@@ -1,15 +1,13 @@
 package top.itning.yunshunas.music.controller;
 
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.CollectionUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import top.itning.yunshunas.music.dto.MusicDTO;
 import top.itning.yunshunas.music.dto.MusicMetaInfo;
@@ -42,51 +40,67 @@ public class MusicController {
     /**
      * 分页获取音乐列表
      *
-     * @param page 分页信息
+     * @param page    页码
+     * @param size    每页数量
+     * @param orderBy 排序
      * @return 音乐列表
      */
     @GetMapping
-    public ResponseEntity<RestModel<Page<MusicDTO>>> getAll(@PageableDefault(size = 20, sort = "name", direction = Sort.Direction.ASC) Pageable page) {
-        return RestModel.ok(musicService.findAll(page));
+    public ResponseEntity<RestModel<PageInfo<MusicDTO>>> getAll(@RequestParam(required = false, defaultValue = "1") int page,
+                                                                @RequestParam(required = false, defaultValue = "20") int size,
+                                                                @RequestParam(required = false, defaultValue = "name asc") String orderBy) {
+        return RestModel.ok(musicService.findAll(page, size, orderBy));
     }
 
     /**
      * 搜索音乐和歌手
      *
-     * @param page    分页信息
+     * @param page    页码
+     * @param size    每页数量
+     * @param orderBy 排序
      * @param keyword 关键词
      * @return 搜索结果
      */
     @GetMapping("/search")
-    public ResponseEntity<RestModel<Page<MusicDTO>>> search(@PageableDefault(size = 20, sort = "name", direction = Sort.Direction.ASC) Pageable page,
-                                                            @NotEmpty(message = "关键字不能为空") String keyword) {
-        return RestModel.ok(musicService.fuzzySearch(keyword, page));
+    public ResponseEntity<RestModel<PageInfo<MusicDTO>>> search(@RequestParam(required = false, defaultValue = "1") int page,
+                                                                @RequestParam(required = false, defaultValue = "20") int size,
+                                                                @RequestParam(required = false, defaultValue = "name asc") String orderBy,
+                                                                @NotEmpty(message = "关键字不能为空") String keyword) {
+        return RestModel.ok(musicService.fuzzySearch(keyword, page, size, orderBy));
     }
 
     /**
      * 搜索歌名
      *
-     * @param page    分页信息
+     * @param page    页码
+     * @param size    每页数量
+     * @param orderBy 排序
      * @param keyword 关键词
      * @return 搜索结果
      */
     @GetMapping("/search/name")
-    public ResponseEntity<RestModel<Page<MusicDTO>>> searchName(@PageableDefault(size = 20, sort = "name", direction = Sort.Direction.ASC) Pageable page,
-                                                                @NotEmpty(message = "关键字不能为空") String keyword) {
-        return RestModel.ok(musicService.fuzzySearchName(keyword, page));
+    public ResponseEntity<RestModel<PageInfo<MusicDTO>>> searchName(@RequestParam(required = false, defaultValue = "1") int page,
+                                                                    @RequestParam(required = false, defaultValue = "20") int size,
+                                                                    @RequestParam(required = false, defaultValue = "name asc") String orderBy,
+                                                                    @NotEmpty(message = "关键字不能为空") String keyword) {
+        return RestModel.ok(musicService.fuzzySearchName(keyword, page, size, orderBy));
     }
 
     /**
      * 搜索歌手
      *
-     * @param page    分页信息
+     * @param page    页码
+     * @param size    每页数量
+     * @param orderBy 排序
      * @param keyword 关键词
      * @return 搜索结果
      */
     @GetMapping("/search/singer")
-    public ResponseEntity<RestModel<Page<MusicDTO>>> searchSinger(@PageableDefault(size = 20, sort = "name", direction = Sort.Direction.ASC) Pageable page,
-                                                                  @NotEmpty(message = "关键字不能为空") String keyword) {
-        return RestModel.ok(musicService.fuzzySearchSinger(keyword, page));
+    public ResponseEntity<RestModel<PageInfo<MusicDTO>>> searchSinger(@RequestParam(required = false, defaultValue = "1") int page,
+                                                                      @RequestParam(required = false, defaultValue = "20") int size,
+                                                                      @RequestParam(required = false, defaultValue = "name asc") String orderBy,
+                                                                      @NotEmpty(message = "关键字不能为空") String keyword) {
+        return RestModel.ok(musicService.fuzzySearchSinger(keyword, page, size, orderBy));
     }
 
     /**

@@ -1,19 +1,13 @@
 package top.itning.yunshunas.music.controller;
 
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import top.itning.yunshunas.music.dto.MusicDTO;
-import top.itning.yunshunas.music.service.MusicService;
+import top.itning.yunshunas.music.dto.MusicManageDTO;
+import top.itning.yunshunas.music.dto.RestModel;
+import top.itning.yunshunas.music.service.MusicManageService;
 import top.itning.yunshunas.music.service.UploadService;
 
 /**
@@ -22,29 +16,42 @@ import top.itning.yunshunas.music.service.UploadService;
  * @author itning
  * @since 2021/10/16 9:47
  */
-@Controller
+@RestController
 @RequestMapping("/musicManage")
 public class MusicManageController {
-    private final MusicService musicService;
     private final UploadService uploadService;
+    private final MusicManageService musicManageService;
 
     @Autowired
-    public MusicManageController(MusicService musicService, UploadService uploadService) {
-        this.musicService = musicService;
+    public MusicManageController(UploadService uploadService, MusicManageService musicManageService) {
         this.uploadService = uploadService;
+        this.musicManageService = musicManageService;
     }
 
     /**
      * 音乐列表页
      *
-     * @param model {@link Model}
+     * @param page    页码
+     * @param size    每页数量
+     * @param orderBy 排序
      * @return 音乐列表
      */
     @GetMapping("/musicList")
-    public String musicList(Model model, @PageableDefault(size = 20, sort = "gmtModified", direction = Sort.Direction.DESC) Pageable page) {
-        Page<MusicDTO> musicPage = musicService.findAll(page);
-        model.addAttribute("musicPage", musicPage);
-        return "music_list";
+    public ResponseEntity<RestModel<PageInfo<MusicManageDTO>>> musicList(@RequestParam(required = false, defaultValue = "1") int page,
+                                                                         @RequestParam(required = false, defaultValue = "20") int size,
+                                                                         @RequestParam(required = false, defaultValue = "gmt_modified desc") String orderBy) {
+        return RestModel.ok(musicManageService.allMusic(page, size, orderBy));
+    }
+
+    /**
+     * 单个歌曲信息
+     *
+     * @param musicId 音乐ID
+     * @return 单个歌曲信息
+     */
+    @GetMapping("/music/{musicId}")
+    public ResponseEntity<RestModel<MusicManageDTO>> musicInfo(@PathVariable String musicId) {
+        return RestModel.ok(musicManageService.musicInfo(musicId));
     }
 
     /**

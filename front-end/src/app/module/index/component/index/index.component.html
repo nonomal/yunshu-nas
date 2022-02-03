@@ -1,4 +1,4 @@
-<nz-layout class="app-layout">
+<nz-layout>
   <nz-sider class="menu-sidebar"
             nzCollapsible
             nzWidth="256px"
@@ -12,7 +12,7 @@
       </a>
     </div>
     <ul nz-menu nzTheme="dark" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
-      <li nz-submenu nzOpen nzTitle="文件" nzIcon="file">
+      <li nz-submenu nzTitle="文件" nzIcon="file">
         <ul>
           <li nz-menu-item nzMatchRouter>
             <a routerLink="/welcome">Welcome</a>
@@ -25,7 +25,7 @@
           </li>
         </ul>
       </li>
-      <li nz-submenu nzOpen nzTitle="视频" nzIcon="video-camera">
+      <li nz-submenu nzTitle="视频" nzIcon="video-camera">
         <ul>
           <li nz-menu-item nzMatchRouter>
             <a routerLink="/welcome">Welcome</a>

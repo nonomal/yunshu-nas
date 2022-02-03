@@ -1,8 +1,6 @@
 package top.itning.yunshunas.music.repository;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.apache.ibatis.annotations.Param;
 import top.itning.yunshunas.music.entity.Music;
 
 import java.util.List;
@@ -12,18 +10,24 @@ import java.util.Optional;
  * @author itning
  * @date 2020/9/5 11:15
  */
-public interface MusicRepository extends JpaRepository<Music, Long> {
-    Page<Music> findAllByNameLikeOrSingerLike(String name, String singer, Pageable pageable);
+public interface MusicRepository {
+    List<Music> findAllByNameLikeOrSingerLike(@Param("name") String name, @Param("singer") String singer);
 
-    Page<Music> findAllByNameLike(String name, Pageable pageable);
+    List<Music> findAllByNameLike(@Param("name") String name);
 
-    Page<Music> findAllBySingerLike(String singer, Pageable pageable);
+    List<Music> findAllBySingerLike(@Param("singer") String singer);
 
-    Optional<Music> findByMusicId(String musicId);
+    Optional<Music> findByMusicId(@Param("musicId") String musicId);
 
-    boolean existsByName(String name);
+    Optional<Music> findById(@Param("id") long id);
 
-    void deleteByMusicId(String musicId);
+    boolean existsByName(@Param("name") String name);
 
-    List<Music> findAllByNameLikeAndSingerLike(String name, String singer);
+    void deleteByMusicId(@Param("musicId") String musicId);
+
+    List<Music> findAllByNameLikeAndSingerLike(@Param("name") String name, @Param("singer") String singer);
+
+    List<Music> findAll();
+
+    void save(Music music);
 }

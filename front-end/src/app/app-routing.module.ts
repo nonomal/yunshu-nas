@@ -1,7 +1,8 @@
 import {NgModule} from '@angular/core';
-import {Routes, RouterModule} from '@angular/router';
+import {RouterModule, Routes} from '@angular/router';
 import {IndexComponent} from "./module/index/component/index/index.component";
 import {ListComponent} from "./module/music/component/list/list.component";
+import {EditComponent} from "./module/music/component/edit/edit.component";
 
 // const routes: Routes = [
 //   { path: '', pathMatch: 'full', redirectTo: '/welcome' },
@@ -21,6 +22,10 @@ const routes: Routes = [
       {
         path: 'music',
         component: ListComponent
+      },
+      {
+        path: 'music/edit/:id',
+        component: EditComponent
       },
     ]
   },

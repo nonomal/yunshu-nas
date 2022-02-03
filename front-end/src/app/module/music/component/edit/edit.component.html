@@ -1,0 +1,57 @@
+<div>
+  <nz-spin [nzSpinning]="dataLoading">
+    <form nz-form [formGroup]="formParams">
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="musicId">歌曲ID</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="歌曲ID必填">
+          <nz-input-group>
+            <input nz-input formControlName="musicId" id="musicId" readonly/>
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="lyricId">歌词ID</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="歌词ID必填">
+          <nz-input-group>
+            <input nz-input formControlName="lyricId" id="lyricId" readonly/>
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="name">歌曲名</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="歌曲名必填">
+          <nz-input-group>
+            <input nz-input formControlName="name" id="name"/>
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="singer">歌手名</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="歌手名必填">
+          <nz-input-group>
+            <input nz-input formControlName="singer" id="singer"/>
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="uploadMusic">上传歌曲</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="必须上传歌曲信息">
+          <nz-input-group>
+            <nz-upload id="uploadMusic"
+              nzAction="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+              [nzHeaders]="{ authorization: 'authorization-text' }"
+            >
+              <button nz-button>
+                <i nz-icon nzType="upload"></i>
+                Click to Upload
+              </button>
+            </nz-upload>
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+    <button nz-button nzType="primary" (nzOnConfirm)="doEdit()" nz-popconfirm
+            nzPopconfirmTitle="确定修改吗？" [nzLoading]="editBtnLoading">立即修改
+    </button>
+  </nz-spin>
+</div>

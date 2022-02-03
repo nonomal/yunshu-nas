@@ -1,24 +1,25 @@
 package top.itning.yunshunas.music.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import top.itning.yunshunas.music.converter.MusicConverter;
 import top.itning.yunshunas.music.datasource.CoverDataSource;
 import top.itning.yunshunas.music.datasource.LyricDataSource;
 import top.itning.yunshunas.music.datasource.MusicDataSource;
 import top.itning.yunshunas.music.dto.MusicDTO;
+import top.itning.yunshunas.music.entity.Music;
 import top.itning.yunshunas.music.repository.MusicRepository;
 import top.itning.yunshunas.music.service.MusicService;
 
-import javax.transaction.Transactional;
 
 /**
  * @author itning
  * @date 2020/9/5 11:25
  */
-@Transactional(rollbackOn = Exception.class)
+@Transactional(rollbackFor = Exception.class)
 @Service
 public class MusicServiceImpl implements MusicService {
     private final MusicRepository musicRepository;
@@ -35,49 +36,54 @@ public class MusicServiceImpl implements MusicService {
     }
 
     @Override
-    public Page<MusicDTO> findAll(Pageable pageable) {
-        return musicRepository.findAll(pageable).map(item -> {
-            MusicDTO musicDTO = MusicConverter.INSTANCE.entity2dto(item);
-            musicDTO.setMusicUri(musicDataSource.getMusic(musicDTO.getMusicId()));
-            musicDTO.setLyricUri(lyricDataSource.getLyric(musicDTO.getLyricId()));
-            musicDTO.setCoverUri(coverDataSource.getCover(musicDTO.getMusicId()));
-            return musicDTO;
-        });
+    public PageInfo<MusicDTO> findAll(int page, int size, String orderBy) {
+        return PageHelper.startPage(page, size, orderBy)
+                .doSelectPage(musicRepository::findAll)
+                .toPageInfo((item) -> {
+                    MusicDTO musicDTO = MusicConverter.INSTANCE.entity2dto((Music) item);
+                    musicDTO.setMusicUri(musicDataSource.getMusic(musicDTO.getMusicId()));
+                    musicDTO.setLyricUri(lyricDataSource.getLyric(musicDTO.getLyricId()));
+                    musicDTO.setCoverUri(coverDataSource.getCover(musicDTO.getMusicId()));
+                    return musicDTO;
+                });
     }
 
     @Override
-    public Page<MusicDTO> fuzzySearch(String keyword, Pageable pageable) {
-        keyword = "%" + keyword + "%";
-        return musicRepository.findAllByNameLikeOrSingerLike(keyword, keyword, pageable).map(item -> {
-            MusicDTO musicDTO = MusicConverter.INSTANCE.entity2dto(item);
-            musicDTO.setMusicUri(musicDataSource.getMusic(musicDTO.getMusicId()));
-            musicDTO.setLyricUri(lyricDataSource.getLyric(musicDTO.getLyricId()));
-            musicDTO.setCoverUri(coverDataSource.getCover(musicDTO.getMusicId()));
-            return musicDTO;
-        });
+    public PageInfo<MusicDTO> fuzzySearch(String keyword, int page, int size, String orderBy) {
+        return PageHelper.startPage(page, size, orderBy)
+                .doSelectPage(() -> musicRepository.findAllByNameLikeOrSingerLike(keyword, keyword))
+                .toPageInfo((item -> {
+                    MusicDTO musicDTO = MusicConverter.INSTANCE.entity2dto((Music) item);
+                    musicDTO.setMusicUri(musicDataSource.getMusic(musicDTO.getMusicId()));
+                    musicDTO.setLyricUri(lyricDataSource.getLyric(musicDTO.getLyricId()));
+                    musicDTO.setCoverUri(coverDataSource.getCover(musicDTO.getMusicId()));
+                    return musicDTO;
+                }));
     }
 
     @Override
-    public Page<MusicDTO> fuzzySearchName(String keyword, Pageable pageable) {
-        keyword = "%" + keyword + "%";
-        return musicRepository.findAllByNameLike(keyword, pageable).map(item -> {
-            MusicDTO musicDTO = MusicConverter.INSTANCE.entity2dto(item);
-            musicDTO.setMusicUri(musicDataSource.getMusic(musicDTO.getMusicId()));
-            musicDTO.setLyricUri(lyricDataSource.getLyric(musicDTO.getLyricId()));
-            musicDTO.setCoverUri(coverDataSource.getCover(musicDTO.getMusicId()));
-            return musicDTO;
-        });
+    public PageInfo<MusicDTO> fuzzySearchName(String keyword, int page, int size, String orderBy) {
+        return PageHelper.startPage(page, size, orderBy)
+                .doSelectPage(() -> musicRepository.findAllByNameLike(keyword))
+                .toPageInfo((item) -> {
+                    MusicDTO musicDTO = MusicConverter.INSTANCE.entity2dto((Music) item);
+                    musicDTO.setMusicUri(musicDataSource.getMusic(musicDTO.getMusicId()));
+                    musicDTO.setLyricUri(lyricDataSource.getLyric(musicDTO.getLyricId()));
+                    musicDTO.setCoverUri(coverDataSource.getCover(musicDTO.getMusicId()));
+                    return musicDTO;
+                });
     }
 
     @Override
-    public Page<MusicDTO> fuzzySearchSinger(String keyword, Pageable pageable) {
-        keyword = "%" + keyword + "%";
-        return musicRepository.findAllBySingerLike(keyword, pageable).map(item -> {
-            MusicDTO musicDTO = MusicConverter.INSTANCE.entity2dto(item);
-            musicDTO.setMusicUri(musicDataSource.getMusic(musicDTO.getMusicId()));
-            musicDTO.setLyricUri(lyricDataSource.getLyric(musicDTO.getLyricId()));
-            musicDTO.setCoverUri(coverDataSource.getCover(musicDTO.getMusicId()));
-            return musicDTO;
-        });
+    public PageInfo<MusicDTO> fuzzySearchSinger(String keyword, int page, int size, String orderBy) {
+        return PageHelper.startPage(page, size, orderBy)
+                .doSelectPage(() -> musicRepository.findAllBySingerLike(keyword))
+                .toPageInfo((item) -> {
+                    MusicDTO musicDTO = MusicConverter.INSTANCE.entity2dto((Music) item);
+                    musicDTO.setMusicUri(musicDataSource.getMusic(musicDTO.getMusicId()));
+                    musicDTO.setLyricUri(lyricDataSource.getLyric(musicDTO.getLyricId()));
+                    musicDTO.setCoverUri(coverDataSource.getCover(musicDTO.getMusicId()));
+                    return musicDTO;
+                });
     }
 }

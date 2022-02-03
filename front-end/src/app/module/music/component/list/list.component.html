@@ -1,1 +1,39 @@
-<p>list works!</p>
+<div>
+  <ng-template #rangeTemplate let-range="range" let-total> {{ range[0] }}-{{ range[1] }} 共{{ total }}条
+  </ng-template>
+  <nz-table #sortTable
+            [nzData]="tableData"
+            [nzFrontPagination]="false"
+            [nzLoading]="loading"
+            [nzTotal]="pageInfo.total"
+            [nzPageSize]="pageInfo.pageSize"
+            [nzPageIndex]="pageInfo.pageNum"
+            [nzPageSizeOptions]="[20,50,100]"
+            [nzShowTotal]="rangeTemplate"
+            [nzShowSizeChanger]="true"
+            (nzQueryParams)="onQueryParamsChange($event)"
+            nzTableLayout="fixed">
+    <thead>
+    <tr>
+      <th nzColumnKey="name">音乐名</th>
+      <th nzColumnKey="singer">歌手名</th>
+      <th nzColumnKey="gmtCreate">创建时间</th>
+      <th nzColumnKey="gmtModified">修改时间</th>
+      <th>操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let data of sortTable.data">
+      <td>{{ data.name }}</td>
+      <td>{{ data.singer }}</td>
+      <td>{{ data.gmtCreate | timeReadable}}</td>
+      <td>{{ data.gmtModified | timeReadable}}</td>
+      <td>
+        <a [routerLink]="['/music/edit' , data.musicId]">修改</a>
+        <nz-divider nzType="vertical"></nz-divider>
+        <a nz-popconfirm nzPopconfirmTitle="确定删除？" (nzOnConfirm)="delete(data.id)">删除</a>
+      </td>
+    </tr>
+    </tbody>
+  </nz-table>
+</div>

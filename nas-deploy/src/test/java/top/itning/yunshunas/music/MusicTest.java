@@ -5,8 +5,6 @@ import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.FileCopyUtils;
@@ -185,15 +183,7 @@ class MusicTest {
     }
 
     private List<Music> fingAllByNameAndSinger(String name, String singer) {
-        Music music = new Music();
-        music.setName(name);
-        music.setSinger(singer);
-
-        ExampleMatcher matcher = ExampleMatcher.matching()
-                .withIgnorePaths("type", "id");
-        Example<Music> example = Example.of(music, matcher);
-
-        return musicRepository.findAll(example);
+        return musicRepository.findAllByNameLikeAndSingerLike(name,singer);
     }
 
     @Test
