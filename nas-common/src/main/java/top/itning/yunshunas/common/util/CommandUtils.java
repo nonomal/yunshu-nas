@@ -8,10 +8,16 @@ import java.util.List;
 import java.util.function.Consumer;
 
 /**
+ * 命令行工具类
+ *
  * @author itning
- * @date 2019/7/17 20:56
+ * @since 2019/7/17 20:56
  */
 public class CommandUtils {
+    private CommandUtils() {
+        throw new UnsupportedOperationException();
+    }
+
     /**
      * 执行命令
      *
@@ -34,5 +40,24 @@ public class CommandUtils {
                 commandInfo.accept(line);
             }
         }
+    }
+
+    public static String process(List<String> command) throws IOException {
+        ProcessBuilder builder = new ProcessBuilder(command);
+        builder.redirectErrorStream(true);
+        Process process = builder.start();
+
+        InputStream inputStream = process.getInputStream();
+        InputStreamReader isr = new InputStreamReader(inputStream);
+        BufferedReader br = new BufferedReader(isr);
+
+        StringBuilder sb = new StringBuilder();
+        try (inputStream; isr; br) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                sb.append(line);
+            }
+        }
+        return sb.toString();
     }
 }

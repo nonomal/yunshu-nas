@@ -6,16 +6,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import top.itning.yunshunas.music.service.FileService;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.constraints.NotNull;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.constraints.NotNull;
 import java.io.IOException;
 
 /**
  * 音乐文件相关接口
  *
  * @author itning
- * @date 2019/7/14 18:48
+ * @since 2019/7/14 18:48
  */
 @CrossOrigin
 @Controller("musicFileController")
@@ -31,18 +31,16 @@ public class FileController {
     /**
      * 获取音乐
      *
-     * @param range    {@link org.springframework.http.HttpHeaders#RANGE}
      * @param id       歌曲ID
      * @param request  {@link HttpServletRequest}
      * @param response {@link HttpServletResponse}
      * @throws Exception 获取失败
      */
     @GetMapping
-    public void getMusic(@RequestHeader(required = false) String range,
-                         @NotNull(message = "ID不存在") String id,
+    public void getMusic(@NotNull(message = "ID不存在") String id,
                          HttpServletRequest request,
                          HttpServletResponse response) throws Exception {
-        fileService.getOneMusic(id, range, request, response);
+        fileService.getOneMusic(id, request, response);
     }
 
     /**

@@ -28,3 +28,11 @@ build/
 
 ### VS Code ###
 .vscode/
+rebel.xml
+application-prod.properties
+pom.xml.versionsBackup
+application-local.properties
+application-nas.properties
+*.log
+*.db
+.fastRequest/
