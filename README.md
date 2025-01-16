@@ -17,50 +17,48 @@
 [![GitHub last commit](https://img.shields.io/github/last-commit/itning/yunshu-nas.svg)](https://github.com/itning/yunshu-nas/commits)
 [![GitHub release](https://img.shields.io/github/release/itning/yunshu-nas.svg)](https://github.com/itning/yunshu-nas/releases)
 [![GitHub repo size in bytes](https://img.shields.io/github/repo-size/itning/yunshu-nas.svg)](https://github.com/itning/yunshu-nas)
-[![Hits](https://hitcount.itning.top?u=itning&r=yunshu-nas)](https://github.com/itning/hit-count)
+[![Hits](https://hitcount.itning.com?u=itning&r=yunshu-nas)](https://github.com/itning/hit-count)
 [![language](https://img.shields.io/badge/language-JAVA-green.svg)](https://github.com/itning/yunshu-nas)
+![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/itning/yunshu-nas/total)
 
 </div>
 
 ---
 
+# 依赖
+
+jre = 21
+
+# 支持数据库类型
+
+MySQL8
+
+Sqlite
+
+Elasticsearch(可选) = 7
+
 # Docker
 
-镜像仓库地址：[DockerHub-itning](https://hub.docker.com/r/itning/yunshu-nas/tags?page=1&ordering=last_updated)
+镜像仓库地址：[![Docker Pulls](https://img.shields.io/docker/pulls/itning/yunshu-nas.svg?style=flat&label=pulls&logo=docker)](https://hub.docker.com/r/itning/yunshu-nas/tags?page=1&ordering=last_updated)
 
 ```shell script
-docker run -d -p 8888:8888 -e MYSQL_URL=mysql8 -e MYSQL_PORT=3306 -e MYSQL_USERNAME=root -e MYSQL_PASSWORD=root --name yunshu-nas itning/yunshu-nas:1.0.0
+docker run --name yunshu-nas -p 8888:8888 -e SERVER_URL=http://localhost:8888 itning/yunshu-nas:latest
 ```
-
-| 环境变量           | 用途                        | 默认值             |
-| ------------------ | --------------------------- | ------------------ |
-| MYSQL_URL          | MySQL的地址（不包含端口号） | localhost          |
-| MYSQL_PORT         | MySQL的端口号               | 3306               |
-| MYSQL_USERNAME     | MySQL用户名                 | root               |
-| MYSQL_PASSWORD     | MySQL密码                   | root               |
-| NAS_FFMPEG_BIN_DIR | ffmpeg bin 目录位置         | /home/ffmpeg/bin   |
-| NAS_OUT_DIR        | 转码目录位置                | /home/tmp          |
-| NAS_ARIA2C_FILE    | aria2c.exe 文件位置         | 空                 |
-| NAS_MUSIC_DIR      | 音乐文件目录                | /home/music_yunshu |
-| NAS_LYRIC_DIR      | 歌词文件目录                | /home/lyric_yunshu |
+其中环境变量`SERVER_URL=http://localhost:8888`意味着前端访问后端的地址是`http://localhost:8888`
 
 # 启动脚本（aria2c 可以不用）
 
 ```shell script
-nohup java -jar yunshu-nas-0.0.1-SNAPSHOT.jar --nas.ffmpeg-bin-dir=/home/shw/ffmpeg-4.2.1-amd64-static --nas.out-dir=/home/shw/a --nas.aria2c-file=/usr/local/bin/aria2c >log.log 2>&1 &
+nohup java -jar yunshu-nas.jar >log.log 2>&1 &
 nohup aria2c --rpc-listen-port 6800 --enable-rpc --rpc-listen-all >aria2c.log 2>&1 &
 ```
-| 属性               | 含义             | 例子                                                     |
-| ------------------ | ---------------- | -------------------------------------------------------- |
-| nas.ffmpeg-bin-dir | Ffmpeg 所在目录  | --nas.ffmpeg-bin-dir=/home/shw/ffmpeg-4.2.1-amd64-static |
-| nas.out-dir        | HLS视频输出目录  | --nas.out-dir=/home/shw/a                                |
-| nas.aria2c-file    | aria2c文件全路径 | --nas.aria2c-file=/usr/local/bin/aria2c                  |
-| nas.music-file-dir | 音乐文件目录 | --nas.music-file-dir=/home/music           |
+
+启动后访问 `http://127.0.0.1:8888` 进入设置页面设置数据库及数据源配置。
 
 # 实现功能
 - [X] 点播视频文件
 
-- [X] 点播音频文件 ~~[Angular版本](https://github.com/itning/YunShuMusicClient) [Electron版本](https://github.com/itning/YunShuMusicClientElectron)~~ [flutter版本](https://github.com/itning/yunshu_music)
+- [X] 点播音频文件 ~~[Angular版本](https://github.com/itning/YunShuMusicClient) [Electron版本](https://github.com/itning/YunShuMusicClientElectron)~~ [flutter版本](https://github.com/itning/yunshu_music) 支持WebDav path:/webdav
 
 - [ ] 文件分布式存储
 
@@ -68,7 +66,7 @@ nohup aria2c --rpc-listen-port 6800 --enable-rpc --rpc-listen-all >aria2c.log 2>
 
 - [ ] 图片在线查看
 
-- [ ] 提供ftp服务
+- [X] 提供ftp服务
 
 - [ ] 资料加密
 
@@ -84,6 +82,10 @@ nohup aria2c --rpc-listen-port 6800 --enable-rpc --rpc-listen-all >aria2c.log 2>
 
 ![](https://raw.githubusercontent.com/itning/yunshu-nas/master/pic/d.png)
 
+![](https://raw.githubusercontent.com/itning/yunshu-nas/master/pic/e.png)
+
+![](https://raw.githubusercontent.com/itning/yunshu-nas/master/pic/f.png)
+
 # 感谢
 
-![](https://raw.githubusercontent.com/itning/yunshu-nas/master/pic/jetbrains.png)
+![JetBrains Logo (Main) logo](https://resources.jetbrains.com/storage/products/company/brand/logos/jb_beam.svg)

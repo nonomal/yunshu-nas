@@ -11,7 +11,7 @@ import java.net.URI;
  * @author itning
  * @since 2022/1/12 11:13
  */
-public interface MusicDataSource {
+public interface MusicDataSource extends DataSource {
     /**
      * 新增音乐
      *
@@ -37,4 +37,16 @@ public interface MusicDataSource {
      * @return 音乐URI
      */
     URI getMusic(String musicId);
+
+    /**
+     * 获取音乐文件（如果文件不在本地则需要下载）
+     * 返回的永远是临时文件
+     *
+     * @param musicId 音乐ID
+     * @return 音乐文件
+     */
+    File getMusicFile(String musicId) throws Exception;
+
+
+    long getFileSize(String musicId);
 }

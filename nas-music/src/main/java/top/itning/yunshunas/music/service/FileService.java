@@ -1,26 +1,29 @@
 package top.itning.yunshunas.music.service;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import top.itning.yunshunas.music.constant.MusicType;
 import top.itning.yunshunas.music.dto.MusicMetaInfo;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
  * @author itning
- * @date 2020/9/5 12:29
+ * @since 2020/9/5 12:29
  */
 public interface FileService {
     /**
      * 获取音乐
      *
      * @param id       音乐ID
-     * @param range    请求头Range
      * @param request  HttpServletRequest
      * @param response HttpServletResponse
      * @throws Exception 失败
      */
-    void getOneMusic(String id, String range, HttpServletRequest request, HttpServletResponse response) throws Exception;
+    void getOneMusic(String id, HttpServletRequest request, HttpServletResponse response) throws Exception;
+
+
+    void getOneMusic(String musicName, String singer, MusicType type, HttpServletRequest request, HttpServletResponse response) throws Exception;
 
     /**
      * 获取歌词
