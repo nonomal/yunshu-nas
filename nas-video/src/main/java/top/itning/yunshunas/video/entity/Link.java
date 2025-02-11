@@ -4,13 +4,14 @@ import lombok.Data;
 
 import java.io.File;
 import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 /**
  * @author itning
- * @date 2019/7/16 23:46
+ * @since 2019/7/16 23:46
  */
 @Data
 public class Link {
@@ -30,28 +31,24 @@ public class Link {
     }
 
     public static List<Link> build(String location) throws UnsupportedEncodingException {
-        String[] locationArray = location.split(SPLIT_REGEX);
+        byte[] decode = Base64.getUrlDecoder().decode(location.getBytes(StandardCharsets.UTF_8));
+        String decodeLocation = new String(decode, StandardCharsets.UTF_8);
+        String[] locationArray = decodeLocation.split(SPLIT_REGEX);
         List<Link> linkList = new ArrayList<>(locationArray.length);
         if (locationArray.length == 0) {
             Link link = new Link();
-            link.setName(location);
+            link.setName(decodeLocation);
             link.setLink(location);
             linkList.add(link);
             return linkList;
         }
-        String last = locationArray[0];
+        StringBuilder last = new StringBuilder(locationArray[0]);
         for (int i = 0; i < locationArray.length; i++) {
             Link link = new Link();
             link.setName(locationArray[i]);
-            link.setLink(URLEncoder.encode(last, "UTF-8")
-                    .replaceAll("\\+", "%20")
-                    .replaceAll("\\%21", "!")
-                    .replaceAll("\\%27", "'")
-                    .replaceAll("\\%28", "(")
-                    .replaceAll("\\%29", ")")
-                    .replaceAll("\\%7E", "~"));
+            link.setLink(Base64.getUrlEncoder().encodeToString(last.toString().getBytes(StandardCharsets.UTF_8)));
             if ((i + 1) != locationArray.length) {
-                last += File.separator + locationArray[i + 1];
+                last.append(File.separator).append(locationArray[i + 1]);
             }
             linkList.add(link);
         }

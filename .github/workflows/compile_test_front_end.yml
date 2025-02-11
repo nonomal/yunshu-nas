@@ -1,0 +1,25 @@
+name: build_front_end
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - nas-front-end/**
+  push:
+    paths:
+      - nas-front-end/**
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./nas-front-end
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'latest'
+      - run: npm install
+      - run: npm run build
